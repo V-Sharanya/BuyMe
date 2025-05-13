@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BUYME - Shoe Auction</title>
+  <link rel="stylesheet" href="index.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <script src="index.js" defer></script> <!-- Link to the JavaScript file -->
+  <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- Title Bar Section -->
+  <header class="title-bar">
+    <div class="logo"><h1>BUYME</h1></div>
+    <nav class="nav-links">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <!-- <li><a href="#">Shop</a></li> -->
+        <li class="dropdown">
+            <a href="auction.html" class="shop-btn">Shop</a>
+            <ul class="dropdown-menu">
+              <!-- <li><a href="men.html">Men</a></li> -->
+              <!-- <li><a href="women.html">Women</a></li> -->
+              <!-- <li><a href="unisex.html">Unisex</a></li> -->
+            </ul>
+          </li>          
+        <li><a href="about.html">About us</a></li>
+        <li><a href="#contact-us">Contact</a></li>
+        <li id="login-link"><a href="login.html">Login</a></li>
+        <!-- <li id="user-name" style="display: none;"><a></a></li> 
+        <li id="user-menu" class="user-menu" style="display: none;">
+          <a href="#" id="user-name-link">
+            <span class="settings-icon">&#9881;</span>Profile
+          </a>
+          <ul class="user-dropdown" >
+            <li><a href="#" id="my-bid-history">My Bid History</a></li>
+            <li><a href="#" id="reset-password">Reset Password</a></li>
+            <li><a href="#" id="delete-account">Delete Account</a></li>
+            <li><a href="#" id="logout">Logout</a></li>
+          </ul>
+        </li> -->
+
+        <li id="user-menu" class="user-menu" style="display: none;">
+          <a href="#" id="user-name-link"></a>
+          <ul class="user-dropdown">
+            <li><a href="#" id="my-bid-history">My Bid History</a></li>
+            <li><a href="#" id="reset-password">Reset Password</a></li>
+            <li><a href="#" id="delete-account">Delete Account</a></li>
+            <li><a href="#" id="logout">Logout</a></li>
+          </ul>
+        </li>
+        </ul>
+    </nav>
+  </header>
+
+
+
+  <!-- Main Banner Section -->
+  <section class="main-banner">
+    <h2>Welcome to the Best Footwear Auction Experience!</h2>
+    <p>Find the rarest and most coveted shoes on the market. Start bidding today and make them yours.</p>
+    <!-- <button class="cta-btn">Start Bidding</button> -->
+    <button class="cta-btn" onclick="window.location.href='auction.html'">
+      Start Bidding
+    </button>
+    
+  </section>
+
+  <!-- Collections Section -->
+  <section class="collections-section">
+    <div class="collection-box men-box">
+      <h2>Men's Collection</h2>
+      <div class="collection-image">
+        <img src="images/shoe2.jpg" alt="Men's Shoes">
+      </div>
+    </div>
+
+
+    <div class="collection-box women-box">
+      <h2>Women's Collection</h2>
+      <div class="collection-image">
+        <img src="images/wshoe8.jpg" alt="Women's Shoes">
+      </div>
+    </div>
+  </section> 
+
+
+  <section class="contact-section" id="contact-us">
+    <div class="contact-column address">
+      <h3>Address</h3>
+      <p>123 BUYME Street,<br> Sneaker City, NY 10001</p>
+      <div class="social-links">
+        <a href="#">Facebook</a>
+        <a href="#">Instagram</a>
+        <a href="#">Twitter</a>
+      </div>
+    </div>
+  
+    <div class="contact-column contact-form">
+      <h3>Contact Us</h3>
+      <form>
+        <div class="inputbox">
+          <input type="text" required>
+          <span>First Name</span>
+          <i></i>
+        </div>
+        <div class="inputbox">
+          <input type="text" required>
+          <span>Last Name</span>
+          <i></i>
+        </div>
+        <div class="inputbox">
+          <input type="email" required>
+          <span>Email</span>
+          <i></i>
+        </div>
+        <div class="inputbox">
+          <input type="tel" required>
+          <span>Phone</span>
+          <i></i>
+        </div>
+        <div class="inputbox">
+          <input type="mes" required>
+          <!-- <textarea required></textarea> -->
+          <span>Your Message</span>
+          <i></i>
+        </div>
+        <button type="submit" class="cta-btn1">Submit</button>
+      </form>
+    </div>
+  
+    <div class="contact-column queries">
+      <h3>Queries</h3>
+      <form id="queryForm">
+        <div class="inputbox">
+          <input type="email" id="queryEmail" required>
+          <span>Your Email</span>
+          <i></i>
+        </div>
+        <div class="inputbox">
+          <input type="query" id="queryText" required>
+          <!-- <textarea id="queryText" required></textarea> -->
+          <span>Your Query</span>
+          <i></i>
+        </div>
+        <label class="checkbox">
+          <input type="checkbox" id="newsletter">
+          Yes, subscribe me to your newsletter
+        </label>
+        <button type="submit" class="cta-btn1">Submit Query</button>
+      </form>
+    </div>
+  </section>
+   
+
+ 
+</body>
+
+<script>
+const API_BASE_URL = 'http://localhost:5000';
+
+// Handle query form submission
+document.getElementById('queryForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('queryEmail').value;
+    const queryText = document.getElementById('queryText').value;
+    const subscribeNewsletter = document.getElementById('newsletter').checked;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/queries/submit`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include', // Include cookies in the request
+            body: JSON.stringify({
+                email,
+                query_text: queryText
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to submit query');
+        }
+
+        const data = await response.json();
+        if (data.success) {
+            alert('Your query has been submitted successfully! We will get back to you soon.');
+            document.getElementById('queryForm').reset();
+        } else {
+            throw new Error(data.message || 'Failed to submit query');
+        }
+    } catch (error) {
+        console.error('Error submitting query:', error);
+        alert('Error: ' + error.message);
+    }
+});
+</script>
+</html>

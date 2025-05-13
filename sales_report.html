@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Report - BUYME</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #333;
+            color: white;
+        }
+
+        h1{
+            color: yellow;
+        }
+        .report-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .report-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            color: #333;
+            text-align: center;
+        }
+        .stat-card h3 {
+            margin: 0;
+            color: #666;
+            font-size: 1rem;
+        }
+        .stat-card p {
+            margin: 0.5rem 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .metric-section {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            color: #333;
+        }
+        .metric-section h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 0.5rem;
+        }
+        .metric-list {
+            list-style: none;
+            padding: 0;
+        }
+        .metric-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .metric-list li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="title-bar">
+        <div class="logo"><h1>BUYME</h1></div>
+        <nav class="nav-links">
+            <ul>
+                <li><a href="admin_dashboard.html">Dashboard</a></li>
+                <li><a href="login.html" id="logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="report-container">
+        <div class="report-header">
+            <h1>Sales Report</h1>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Total Earnings</h3>
+                <p id="totalEarnings">$0</p>
+            </div>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-section">
+                <h3>Earnings by Item</h3>
+                <ul class="metric-list" id="itemEarnings">
+                    <!-- Will be populated dynamically -->
+                </ul>
+            </div>
+            
+            <div class="metric-section">
+                <h3>Earnings by Buyer</h3>
+                <ul class="metric-list" id="buyerEarnings">
+                    <!-- Will be populated dynamically -->
+                </ul>
+            </div>
+            <div class="metric-section">
+                <h3>Best Selling Items</h3>
+                <ul class="metric-list" id="topItems">
+                    <!-- Will be populated dynamically -->
+                </ul>
+            </div>
+            <div class="metric-section">
+                <h3>Top Buyers</h3>
+                <ul class="metric-list" id="topBuyers">
+                    <!-- Will be populated dynamically -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="sales_report.js"></script>
+</body>
+</html> 

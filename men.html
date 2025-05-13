@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BUYME - Men's Shoes</title>
+  <link rel="stylesheet" href="men.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <script src="men.js" defer></script> 
+  <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+    <!-- Title Bar Section -->
+  <header class="title-bar">
+    <div class="logo"><h1>BUYME</h1></div>
+    <nav class="nav-links">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <!-- <li><a href="#">Shop</a></li> -->
+        <li class="dropdown">
+            <a href="#" class="shop-btn">Shop</a>
+            <ul class="dropdown-menu">
+              <li><a href="men.html">Men</a></li>
+              <li><a href="women.html">Women</a></li>
+              <li><a href="unisex.html">Unisex</a></li>
+            </ul>
+          </li>          
+        <li><a href="auction.html">Auction</a></li>
+        <li><a href="index.html#contact-us">Contact</a></li>        
+        <li id="login-link"><a href="login.html">Login</a></li>
+        <li id="user-name" style="display: none;"><a></a></li>
+        <li id="user-menu" class="user-menu" style="display: none;">
+          <a href="#" id="user-name-link">
+            <span class="settings-icon">&#9881;</span>
+          </a>
+          <ul class="user-dropdown" >
+            <li><a href="#" id="my-bid-history">My Bid History</a></li>
+            <li><a href="#" id="reset-password">Reset Password</a></li>
+            <li><a href="#" id="delete-account">Delete Account</a></li>
+            <li><a href="#" id="logout">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+<!-- Category Tab Bar -->
+<section class="category-bar">
+    <div class="category-container">
+        <span class="category-label">Categories</span>
+      <div class="category-item active" data-category="all">All</div>
+      <div class="category-item" data-category="casual">Casual Shoes</div>
+      <div class="category-item" data-category="sport">Sport Shoes</div>
+      <div class="category-item" data-category="formal">Office Shoes</div>
+      <div class="category-item" data-category="sneakers">Sneakers</div>
+      <div class="category-item" data-category="sandals">Sandals & Floaters</div>
+      <div class="category-item" data-category="flipflops">Flip Flops</div>
+    </div>
+  </section>
+  
+  <!-- Products Grid -->
+  <section class="products-grid" id="productsGrid">
+    <!-- Products will be dynamically inserted here -->
+  </section>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:5000';
+    let currentCategory = 'all';
+
+    // Function to fetch and display shoes
+    async function fetchAndDisplayShoes() {
+      try {
+        console.log('Fetching shoes from API...');
+        const response = await fetch(`${API_BASE_URL}/items`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const items = await response.json();
+        console.log('Received items:', items);
+        
+        if (!Array.isArray(items)) {
+          throw new Error('Received data is not an array');
+        }
+        
+        // Filter items for men's shoes
+        const mensShoes = items.filter(item => item.gender === 'men');
+        console.log('Filtered men\'s shoes:', mensShoes);
+        
+        if (mensShoes.length === 0) {
+          console.log('No men\'s shoes found in the database');
+          document.getElementById('productsGrid').innerHTML = '<p>No shoes available at the moment.</p>';
+          return;
+        }
+        
+        displayShoes(mensShoes);
+      } catch (error) {
+        console.error('Error fetching shoes:', error);
+        document.getElementById('productsGrid').innerHTML = `
+          <div style="text-align: center; padding: 2rem;">
+            <p style="color: red;">Error loading shoes. Please try again later.</p>
+            <p style="color: #666;">Error details: ${error.message}</p>
+          </div>
+        `;
+      }
+    }
+
+    // Function to display shoes
+    function displayShoes(items) {
+      const container = document.getElementById('productsGrid');
+      container.innerHTML = '';
+
+      // Filter items based on current category
+      const filteredItems = currentCategory === 'all' 
+        ? items 
+        : items.filter(item => {
+            const description = (item.description || '').toLowerCase();
+            return description.includes(currentCategory);
+          });
+
+      if (filteredItems.length === 0) {
+        container.innerHTML = '<p>No shoes found in this category.</p>';
+        return;
+      }
+
+      filteredItems.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <a href="product_des.html?item_id=${item.item_id}" class="card-link">
+            <img src="${API_BASE_URL}${item.image}" alt="${item.name}" class="image">
+            <div class="text">
+              <span>${item.name}</span>
+            </div>
+          </a>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Add click event listeners to category items
+    document.querySelectorAll('.category-item').forEach(item => {
+      item.addEventListener('click', () => {
+        // Remove active class from all items
+        document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+        // Add active class to clicked item
+        item.classList.add('active');
+        // Update current category
+        currentCategory = item.dataset.category;
+        // Refresh the display
+        fetchAndDisplayShoes();
+      });
+    });
+
+    // Fetch and display shoes when page loads
+    document.addEventListener('DOMContentLoaded', fetchAndDisplayShoes);
+  </script>
+
+  <script src="index.js"></script>
+  
+</body>
+</html>

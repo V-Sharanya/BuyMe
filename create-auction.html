@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Create Auction | BUYME</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Roboto Mono', monospace;
+      padding: 2rem;
+      background-color: black;
+    }
+
+    form {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.7rem;
+      margin: 0.5rem 0 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 0.7rem 1.5rem;
+      background-color: #222;
+      color: yellow;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <form action="http://localhost:5000/pi/auctions/create" method="POST">
+    <h2>Create Auction</h2>
+
+    <label>Item ID:</label>
+    <input type="number" name="item_id" required placeholder="Enter Item ID" />
+
+    <label>Start Time:</label>
+    <input type="datetime-local" name="start_time" required />
+
+    <label>End Time:</label>
+    <input type="datetime-local" name="end_time" required />
+
+    <label>Starting Price:</label>
+    <input type="number" name="starting_price" required step="0.01" />
+
+    <label>Minimum Price (Reserve):</label>
+    <input type="number" name="min_price" required step="0.01" />
+
+    <label>Bid Increment:</label>
+    <input type="number" name="bid_increment" required step="0.01" />
+
+    <button type="submit">Create Auction</button>
+  </form>
+  <div id="toast" style="display:none; position:fixed; bottom:20px; right:20px; background:#333; color:#fff; padding:1rem 1.5rem; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.3); z-index:9999;"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const itemId = params.get('item_id');
+      if (itemId) {
+        document.querySelector('input[name="item_id"]').value = itemId;
+        document.querySelector('input[name="item_id"]').readOnly = true;
+      }
+    });
+
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
+    const toast = document.getElementById('toast');
+
+    const params = new URLSearchParams(window.location.search);
+    const itemId = params.get('item_id');
+    if (itemId) {
+      const itemInput = document.querySelector('input[name="item_id"]');
+      itemInput.value = itemId;
+      itemInput.readOnly = true;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          showToast("Auction created successfully!");
+          form.reset();
+        } else {
+          showToast("Failed to create auction.", true);
+        }
+      } catch (error) {
+        console.error(error);
+        showToast("Error connecting to server.", true);
+      }
+    });
+
+    function showToast(message, isError = false) {
+      toast.textContent = message;
+      toast.style.backgroundColor = isError ? '#d9534f' : '#28a745';
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3000);
+    }
+  });
+  </script>
+  
+</body>
+</html>

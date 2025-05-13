@@ -1,0 +1,129 @@
+
+    /* General Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Roboto mono', monospace;
+      }
+      .dashboard-container {
+          width: 100%;
+          max-width: 1200px;
+        }
+        
+        .dashboard-heading {
+          text-align: left;
+          font-size: 2rem;
+          color: white;
+          margin-bottom: 2rem;
+        }
+  
+  
+      body {
+          background-color: #333;
+          color: white;
+          min-height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 2rem;
+        }
+        
+  
+      /* Cards Container */
+      .cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+      }
+  
+      /* Card Styles */
+      .card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        height: 250px;
+        width: 250px;
+        border-radius: 10px;
+        color: black;
+        cursor: pointer;
+        transition: 400ms;
+        padding: 1.5rem;
+        justify-content: space-between;
+      }
+  
+      .cards .red {
+        background-color: yellow;
+        color: black;
+      }
+  
+      .cards .blue {
+        background-color: #eab308;
+      }
+  
+      .cards .green {
+        background-color: yellow;
+      }
+  
+      .cards .yellow {
+        background-color: #eab308;
+      }
+  
+      .cards .card p.tip {
+        font-size: 1.2rem;
+        font-weight: 700;
+      }
+  
+      .cards .card p.second-text {
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+      }
+  
+      .cards .card:hover {
+        transform: scale(1.1, 1.1);
+      }
+  
+      .cards:hover > .card:not(:hover) {
+        filter: blur(8px);
+        transform: scale(0.9, 0.9);
+      }
+  
+      /* CTA Button */
+      .cta-btn {
+        position: relative;
+        margin-top: 1rem;
+        padding: 0.6rem 1.5rem;
+        font-size: 1rem;
+        background-color: black;
+        color: yellow;
+        cursor: pointer;
+        border: none;
+        overflow: hidden;
+        z-index: 1;
+        border-radius: 8px;
+        transition: color 0.3s ease;
+      }
+  
+      .cta-btn::before {
+        content: "";
+        position: absolute;
+        background-color: yellow;
+        width: 0%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        transition: width 0.4s ease;
+      }
+  
+      .cta-btn:hover::before {
+        width: 100%;
+      }
+  
+      .cta-btn:hover {
+        color: black;
+      }
+  
+  

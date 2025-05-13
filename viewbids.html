@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>View Bids - BUYME</title>
+  <link rel="stylesheet" href="./viewbids.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  
+
+  <main class="bids-container">
+    <section class="auctions-section ongoing-auctions">
+      <h2>Ongoing Auctions</h2>
+      <div class="auctions-grid" id="ongoingAuctions">
+      </div>
+    </section>
+
+    <section class="auctions-section completed-auctions">
+      <h2>Completed Auctions</h2>
+      <div class="auctions-grid" id="completedAuctions">
+      </div>
+      
+    </section>
+  </main>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:5000';
+
+    async function fetchAllAuctions() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/pi/auctions/all`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.success && data.auctions) {
+          displayAuctions(data.auctions);
+        } else {
+          throw new Error('Invalid response format');
+        }
+      } catch (error) {
+        console.error('Error fetching auctions:', error);
+        const ongoingAuctionsContainer = document.getElementById('ongoingAuctions');
+        const completedAuctionsContainer = document.getElementById('completedAuctions');
+        
+        ongoingAuctionsContainer.innerHTML = `
+          <div class="error-message">
+            <p>Unable to connect to the server. Please make sure the backend server is running.</p>
+            <p>Error details: ${error.message}</p>
+          </div>
+        `;
+        completedAuctionsContainer.innerHTML = '';
+      }
+    }
+
+    function displayAuctions(auctions) {
+      const ongoingAuctionsContainer = document.getElementById('ongoingAuctions');
+      const completedAuctionsContainer = document.getElementById('completedAuctions');
+      
+      ongoingAuctionsContainer.innerHTML = '';
+      completedAuctionsContainer.innerHTML = '';
+
+      const now = new Date();
+
+      auctions.forEach(auction => {
+        const auctionEndTime = new Date(auction.end_time);
+        const isOngoing = auctionEndTime > now;
+        const auctionId = auction.auction_id;
+        if (!auctionId) return;
+
+        const card = document.createElement('div');
+        card.className = 'auction-card';
+        card.innerHTML = `
+          <div class="auction-image">
+            <img src="${API_BASE_URL}${auction.image_url}" alt="${auction.item_name}">
+          </div>
+          <div class="auction-details">
+            <h3>${auction.item_name}</h3>
+            <div class="auction-info">
+              <p class="current-bid">Current Bid: $${auction.current_bid || auction.starting_price}</p>
+              <p class="end-time">Ends: ${auctionEndTime.toLocaleString()}</p>
+            </div>
+            <div class="auction-ended-placeholder"></div>
+            <div class="bid-history">
+              <h4>Bid History</h4>
+              <ul class="bid-list" id="bidList-${auction.auction_id}">
+                <!-- Bids will be dynamically added here -->
+              </ul>
+            </div>
+            ${isOngoing ? '' : ''}
+          </div>
+        `;
+
+        if (isOngoing) {
+          ongoingAuctionsContainer.appendChild(card);
+        } else {
+          completedAuctionsContainer.appendChild(card);
+          // Fetch bids and update winner info for completed auctions
+          fetch(`${API_BASE_URL}/api/bids/auction/${auctionId}`)
+            .then(res => res.json())
+            .then(bids => {
+              const placeholder = card.querySelector('.auction-ended-placeholder');
+              if (!bids || bids.length === 0) {
+                placeholder.innerHTML = `<div class="auction-ended"><p>Auction Ended</p><div class="winner-info"><p>No bids placed</p></div></div>`;
+                return;
+              }
+              // Sort bids by amount desc, then by earliest time
+              bids.sort((a, b) => {
+                const amountA = parseFloat(a.bid_amount) || 0;
+                const amountB = parseFloat(b.bid_amount) || 0;
+                if (amountB === amountA) {
+                  return new Date(a.bid_time) - new Date(b.bid_time);
+                }
+                return amountB - amountA;
+              });
+              const highestBid = bids[0];
+              const highestBidAmount = parseFloat(highestBid.bid_amount) || 0;
+              const startingPrice = parseFloat(auction.starting_price) || 0;
+              if (highestBidAmount >= startingPrice) {
+                placeholder.innerHTML = `
+                  <div class="auction-ended">
+                    <p>Auction Ended</p>
+                    <div class="winner-info">
+                      <p>Winner: <span class="winner-name">${highestBid.username || 'Anonymous'}</span></p>
+                      <p>Winning Bid: <span class="winning-bid">$${highestBidAmount.toFixed(2)}</span></p>
+                      <p>Bid Time: <span class="bid-time">${new Date(highestBid.bid_time).toLocaleString()}</span></p>
+                    </div>
+                  </div>
+                `;
+              } else {
+                placeholder.innerHTML = `
+                  <div class="auction-ended">
+                    <p>Auction Ended</p>
+                    <div class="winner-info">
+                      <p>Bid did not exceed minimum price</p>
+                    </div>
+                  </div>
+                `;
+              }
+            })
+            .catch(() => {
+              const placeholder = card.querySelector('.auction-ended-placeholder');
+              placeholder.innerHTML = `<div class="auction-ended"><p>Auction Ended</p><div class="winner-info"><p>Could not load winner info</p></div></div>`;
+            });
+        }
+        // Fetch and display bids for this auction (for bid history)
+        fetchBidsForAuction(auction.auction_id);
+      });
+    }
+
+    function createAuctionCard(auction) {
+      const card = document.createElement('div');
+      card.className = 'auction-card';
+      
+      const endTime = new Date(auction.end_time);
+      const isOngoing = endTime > new Date();
+      
+      card.innerHTML = `
+        <div class="auction-image">
+          <img src="${API_BASE_URL}${auction.image_url}" alt="${auction.item_name}">
+        </div>
+        <div class="auction-details">
+          <h3>${auction.item_name}</h3>
+          <div class="auction-info">
+            <p class="current-bid">Current Bid: $${auction.current_bid || auction.starting_price}</p>
+            <p class="end-time">Ends: ${endTime.toLocaleString()}</p>
+          </div>
+          <div class="bid-history">
+            <h4>Bid History</h4>
+            <ul class="bid-list" id="bidList-${auction.auction_id}">
+              <!-- Bids will be dynamically added here -->
+            </ul>
+          </div>
+          
+          ${!isOngoing ? `
+            <div class="auction-ended">
+              <p>Auction Ended</p>
+            </div>
+          ` : ''}
+        </div>
+      `;
+
+      // Fetch and display bids for this auction
+      fetchBidsForAuction(auction.auction_id);
+      
+      return card;
+    }
+
+    // Fetch bids for a specific auction
+    async function fetchBidsForAuction(auctionId) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/bids/auction/${auctionId}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        displayBids(auctionId, data);
+      } catch (error) {
+        console.error(`Error fetching bids for auction ${auctionId}:`, error);
+        const bidList = document.getElementById(`bidList-${auctionId}`);
+        if (bidList) {
+          bidList.innerHTML = '<li class="error-message">Unable to load bid history</li>';
+        }
+      }
+    }
+
+    // Display bids for a specific auction
+    function displayBids(auctionId, bids) {
+      const bidList = document.getElementById(`bidList-${auctionId}`);
+      if (!bidList) return;
+
+      bidList.innerHTML = '';
+
+      if (!bids || bids.length === 0) {
+        bidList.innerHTML = '<li class="no-bids">No bids yet</li>';
+        return;
+      }
+
+      // Sort bids by amount in descending order and time
+      bids.sort((a, b) => {
+        const amountA = parseFloat(a.bid_amount) || 0;
+        const amountB = parseFloat(b.bid_amount) || 0;
+        if (amountB === amountA) {
+          return new Date(a.bid_time) - new Date(b.bid_time);
+        }
+        return amountB - amountA;
+      });
+
+      // Show only top 2 bids in the card view
+      const topBids = bids.slice(0, 2);
+      
+      topBids.forEach((bid, index) => {
+        const li = document.createElement('li');
+        li.className = 'bid-item';
+        if (index === 0) li.classList.add('highest-bid');
+        
+        // Convert bid amount to number and format it
+        const bidAmount = parseFloat(bid.bid_amount) || 0;
+        const formattedAmount = bidAmount.toFixed(2);
+        
+        // Ensure we have a valid username
+        const bidderName = bid.username ? bid.username : 'Anonymous';
+        
+        
+        li.innerHTML = `
+          <div class="bid-info">
+            <span class="bidder-name">${bidderName}</span>
+            <span class="bid-amount">$${formattedAmount}</span>
+            <span class="bid-time">${new Date(bid.bid_time).toLocaleString()}</span>
+          </div>
+        `;
+        bidList.appendChild(li);
+      });
+
+      if (bids.length > 2) {
+        const moreBids = document.createElement('li');
+        moreBids.className = 'more-bids';
+        moreBids.textContent = `+${bids.length - 2} more bids`;
+        bidList.appendChild(moreBids);
+      }
+    }
+
+
+    // Fetch auctions when page loads
+    document.addEventListener('DOMContentLoaded', fetchAllAuctions);
+
+    // Set up auto-refresh for auctions
+    setInterval(fetchAllAuctions, 30000); // Refresh every 30 seconds
+  </script>
+</body>
+</html>

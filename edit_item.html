@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Shoe</title>
+  <style>
+    body {
+      font-family: 'Roboto mono', monospace;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #333;
+    }
+
+    h2{
+      color: yellow;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      color: white;
+    }
+    /* input, textarea, select {
+      padding: 8px;
+      /* border: 1px solid #ddd; 
+      border-radius: 4px;
+      color: white;
+      background-color: #333;
+    } */
+    textarea {
+      height: 100px;
+      resize: vertical;
+    }
+
+
+    input[type="text"],
+input[type="number"],
+input[type="file"],
+textarea,select {
+    font-family: "Roboto mono", monospace;
+    font-weight: 500;
+    font-size: 1.2vw;
+    color: #fff;
+    background-color: rgb(28, 28, 30);
+    box-shadow: 0 0 .4vw rgba(0, 0, 0, 0.5), 0 0 0 .15vw transparent;
+    border-radius: 0.4vw;
+    border: none;
+    outline: none;
+    padding: 0.6vw;
+    transition: .4s;
+    width: 100%;
+    resize: none;
+}
+
+/* Hover and focus effects */
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="file"]:hover,
+textarea:hover,
+select:hover {
+    box-shadow: 0 0 0 .15vw rgba(238, 243, 142, 0.186);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="file"]:focus,
+textarea:focus,
+select:focus {
+    box-shadow: 0 0 0 .15vw yellow;
+}
+
+
+    .cta-btn {
+  position: relative;
+  margin-top: 2rem;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  background-color: black;
+  color: yellow;
+  cursor: pointer;
+  border: none;
+  overflow: hidden;
+  z-index: 1;
+  border-radius: 8px;
+  transition: color 0.3s ease;
+}
+
+.cta-btn::before {
+  content: "";
+  position: absolute;
+  background-color: yellow;
+  width: 0%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: width 0.4s ease;
+}
+
+.cta-btn:hover::before {
+  width: 100%;
+}
+
+.cta-btn:hover {
+  color: black;
+}
+
+    button {
+      padding: 10px 20px;
+      background-color: black;
+      color: yellow;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: yellow;
+    }
+    .preview-image {
+      max-width: 200px;
+      max-height: 200px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Edit Shoe Details</h2>
+
+  <form id="editForm" enctype="multipart/form-data">
+    <input type="hidden" id="item_id" name="item_id">
+    <input type="hidden" id="seller_id" name="seller_id">
+    
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    
+    <label for="description">Description:</label>
+    <textarea id="description" name="description"></textarea>
+    
+    <label for="brand">Brand:</label>
+    <input type="text" id="brand" name="brand">
+    
+    <label for="size">Size:</label>
+    <input type="text" id="size" name="size" required>
+    
+    <label for="color">Color:</label>
+    <input type="text" id="color" name="color">
+    
+    <label for="material">Material:</label>
+    <input type="text" id="material" name="material">
+    
+    <label for="gender">Gender:</label>
+    <select id="gender" name="gender">
+      <option value="men">Men</option>
+      <option value="women">Women</option>
+      <option value="kids">Kids</option>
+    </select>
+    
+    <label>Current Image:</label>
+    <img id="currentImage" class="preview-image" src="" alt="Current shoe image">
+    
+    <label>Change Image (optional):</label>
+    <input type="file" id="image" name="image" accept="image/*">
+    
+    <button class="cta-btn" type="submit">Save Changes</button>
+  </form>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:5000';
+
+    // Get item_id from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const itemId = urlParams.get('item_id');
+
+    if (!itemId) {
+      alert('No item ID provided');
+      window.location.href = 'shoelist.html';
+    }
+
+    // Fetch item details
+    async function fetchItemDetails() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/items/${itemId}`);
+        const item = await response.json();
+        
+        if (item) {
+          // Populate form fields
+          document.getElementById('item_id').value = item.item_id;
+          document.getElementById('seller_id').value = item.seller_id;
+          document.getElementById('name').value = item.name || '';
+          document.getElementById('description').value = item.description || '';
+          document.getElementById('brand').value = item.brand || '';
+          document.getElementById('size').value = item.size || '';
+          document.getElementById('color').value = item.color || '';
+          document.getElementById('material').value = item.material || '';
+          document.getElementById('gender').value = item.gender || 'men';
+          
+          // Set current image if exists
+          if (item.image) {
+            document.getElementById('currentImage').src = `${API_BASE_URL}${item.image}`;
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching item details:', error);
+        alert('Error loading item details. Please try again.');
+      }
+    }
+
+    // Handle form submission
+    document.getElementById('editForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/items/edit/${itemId}`, {
+          method: 'PUT',
+          body: formData
+        });
+        
+        if (response.ok) {
+          alert('Item updated successfully!');
+          window.location.href = 'shoelist.html';
+        } else {
+          alert('Failed to update item. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error updating item:', error);
+        alert('Error updating item. Please try again.');
+      }
+    });
+
+    // Fetch item details when page loads
+    document.addEventListener('DOMContentLoaded', fetchItemDetails);
+  </script>
+</body>
+</html>

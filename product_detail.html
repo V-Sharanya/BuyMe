@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Details - BUYME</title>
+  <link rel="stylesheet" href="product_detail.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <header class="title-bar">
+    <div class="logo">
+      <h1>BUYME</h1>
+    </div>
+    <nav class="nav-links">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <!-- <li><a href="#">Shop</a></li> -->
+        <li class="dropdown">
+          <a href="auction.html" class="shop-btn">Shop</a>
+          <ul class="dropdown-menu">
+            <!-- <li><a href="men.html">Men</a></li> -->
+            <!-- <li><a href="women.html">Women</a></li> -->
+            <!-- <li><a href="unisex.html">Unisex</a></li> -->
+          </ul>
+        </li>
+        <li><a href="about.html">About us</a></li>
+        <li><a href="#contact-us">Contact</a></li>
+        <li id="login-link"><a href="login.html">Login</a></li>
+        <!-- <li id="user-name" style="display: none;"><a></a></li> 
+        <li id="user-menu" class="user-menu" style="display: none;">
+          <a href="#" id="user-name-link">
+            <span class="settings-icon">&#9881;</span>Profile
+          </a>
+          <ul class="user-dropdown" >
+            <li><a href="#" id="my-bid-history">My Bid History</a></li>
+            <li><a href="#" id="reset-password">Reset Password</a></li>
+            <li><a href="#" id="delete-account">Delete Account</a></li>
+            <li><a href="#" id="logout">Logout</a></li>
+          </ul>
+        </li> -->
+
+        <li id="user-menu" class="user-menu" style="display: none;">
+          <a href="#" id="user-name-link"></a>
+          <ul class="user-dropdown">
+            <li><a href="#" id="my-bid-history">My Bid History</a></li>
+            <li><a href="#" id="reset-password">Reset Password</a></li>
+            <li><a href="#" id="delete-account">Delete Account</a></li>
+            <li><a href="#" id="logout">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="product-container">
+    <!-- Left Section: Images -->
+    <section class="left-section">
+      <img id="productImage" src="" alt="Product Image" class="product-image" />
+    </section>
+
+    <!-- Middle Section: Description and Place a Bid -->
+    <section class="middle-section">
+      <h2 id="productName"></h2>
+      <p id="productDescription"></p>
+      <div class="product-specs-grid">
+        <div class="label">Size</div>
+        <div class="label">Color</div>
+        <div class="label">Category</div>
+        <div class="value" id="productSize"></div>
+        <div class="value" id="productColor"></div>
+        <div class="value" id="productType"></div>
+
+        <div class="label">Type</div>
+        <div class="label">Material</div>
+        <div class="label">Brand</div>
+        <div class="value" id="productCategory"></div>
+        <div class="value" id="productMaterial"></div>
+        <div class="value" id="productBrand"></div>
+
+        <div class="label expiry-label">Product Expiry :</div>
+        <div class="label status-label">Status</div>
+        <div class="value expiry-value">15th May, 2025; 9:00PM</div>
+        <div class="value status-value">Available</div>
+
+        <div class="label full">Seller Details :</div>
+        <div class="value full" id="sellerDetails"></div>
+      </div>
+
+      <div class="bid-form">
+        <input type="number" id="bidAmount" placeholder="Enter your bid $" min="0" step="0.01" required />
+        <button id="placeBidBtn">Place Bid</button>
+      </div>
+    </section>
+
+    <!-- Right Section: Bids -->
+    <section class="right-section">
+      <div class="bids-section">
+        <h3>Bid History</h3>
+        <div class="bid-list-container">
+          <ul class="bid-list" id="bidList">
+            <!-- Bids will be dynamically added here -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- Winner Section -->
+      <div id="winnerSection" class="winner-section" style="display: none;">
+        <h3>Auction Winner</h3>
+        <div id="winnerDetails" class="winner-details">
+          <!-- Winner information will be displayed here -->
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:5000';
+    let currentAuction = null; // Global variable to store auction data
+
+    // Get auction_id from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const auctionId = urlParams.get('auction_id');
+
+    if (!auctionId) {
+      console.error('No auction ID provided in URL');
+      alert('No auction ID provided');
+      window.location.href = 'auction.html';
+      throw new Error('No auction ID provided');
+    }
+
+    // Fetch product details and bids
+    async function fetchProductDetails() {
+      try {
+        console.log('Fetching details for auction ID:', auctionId); // Debug log
+        const [auctionsResponse, bidsResponse] = await Promise.all([
+          fetch(`${API_BASE_URL}/pi/auctions/all`),
+          fetch(`${API_BASE_URL}/api/bids/auction/${auctionId}`)
+        ]);
+
+        if (!auctionsResponse.ok || !bidsResponse.ok) {
+          throw new Error(`Failed to fetch data. Status: ${auctionsResponse.status}, ${bidsResponse.status}`);
+        }
+
+        const auctionsData = await auctionsResponse.json();
+        const bids = await bidsResponse.json();
+
+        // Find the specific auction from the list
+        currentAuction = auctionsData.auctions.find(a => a.auction_id == auctionId);
+
+        if (!currentAuction) {
+          throw new Error('Auction not found');
+        }
+
+        console.log('Found auction data:', currentAuction); // Debug log
+        console.log('Received bids data:', bids); // Debug log
+
+        displayProductDetails(currentAuction);
+        displayBids(bids);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        alert('Error loading product details. Please try again.');
+        window.location.href = 'auction.html';
+      }
+    }
+
+    // Display product details
+    function displayProductDetails(auction) {
+      try {
+        // Update the image
+        const productImage = document.getElementById('productImage');
+        if (productImage && auction.image_url) {
+          productImage.src = `${API_BASE_URL}${auction.image_url}`;
+          productImage.alt = auction.item_name || 'Product Image';
+        }
+
+        // Update the product name
+        const productName = document.getElementById('productName');
+        if (productName) {
+          productName.textContent = auction.item_name || 'Product Name Not Available';
+        }
+
+        // Update the description
+        const description = document.getElementById('productDescription');
+        if (description) {
+          description.textContent = auction.item_description || 'No description available';
+        }
+
+        // Update product specifications
+        const size = document.getElementById('productSize');
+        if (size) {
+          size.textContent = auction.size || 'N/A';
+        }
+
+        const color = document.getElementById('productColor');
+        if (color) {
+          color.textContent = auction.color || 'N/A';
+        }
+
+        const type = document.getElementById('productType');
+        if (type) {
+          type.textContent = auction.gender || 'N/A';
+        }
+
+        const category = document.getElementById('productCategory');
+        if (category) {
+          category.textContent = auction.category || 'N/A';
+        }
+
+        const material = document.getElementById('productMaterial');
+        if (material) {
+          material.textContent = auction.material || 'N/A';
+        }
+
+        const brand = document.getElementById('productBrand');
+        if (brand) {
+          brand.textContent = auction.brand || 'N/A';
+        }
+
+        // Update seller information
+        const sellerInfo = document.getElementById('sellerDetails');
+        if (sellerInfo) {
+          sellerInfo.textContent = `Seller ID: ${auction.seller_id || 'Unknown'}`;
+        }
+
+        // Update bid input placeholder with minimum bid amount
+        const currentBid = parseFloat(auction.current_bid || auction.starting_price);
+        const bidIncrement = parseFloat(auction.bid_increment || 100);
+        const minimumNextBid = currentBid + bidIncrement;
+        const bidAmountInput = document.getElementById('bidAmount');
+        if (bidAmountInput) {
+          bidAmountInput.placeholder = `Minimum bid: $${minimumNextBid.toFixed(2)}`;
+        }
+
+        // Update auction status
+        const expiryValue = document.querySelector('.expiry-value');
+        if (expiryValue && auction.end_time) {
+          const endTime = new Date(auction.end_time);
+          expiryValue.textContent = endTime.toLocaleString();
+        }
+
+        const statusValue = document.querySelector('.status-value');
+        if (statusValue) {
+          const now = new Date();
+          const endTime = new Date(auction.end_time);
+          statusValue.textContent = now < endTime ? 'Available' : 'Ended';
+
+          // Disable bid button if auction has ended
+          const bidButton = document.getElementById('placeBidBtn');
+          if (bidButton) {
+            bidButton.disabled = now >= endTime;
+            if (now >= endTime) {
+              bidButton.textContent = 'Auction Ended';
+            }
+          }
+        }
+
+      } catch (error) {
+        console.error('Error displaying product details:', error);
+      }
+    }
+
+    // Display bids
+    function displayBids(bids) {
+      const bidList = document.getElementById('bidList');
+      bidList.innerHTML = '';
+
+      if (!bids || bids.length === 0) {
+        bidList.innerHTML = '<li class="no-bids">No bids yet</li>';
+        return;
+      }
+
+      // Sort bids by amount in descending order
+      bids.sort((a, b) => parseFloat(b.bid_amount) - parseFloat(a.bid_amount));
+
+      bids.forEach((bid, index) => {
+        const li = document.createElement('li');
+        li.className = 'bid-item';
+        if (index === 0) li.classList.add('highest-bid');
+
+        const bidAmount = parseFloat(bid.bid_amount).toFixed(2);
+        const bidderName = bid.username || 'Anonymous';
+
+        li.innerHTML = `
+          <div class="bid-info">
+            <span class="bidder-name">${bidderName}</span>
+            <span class="bid-amount">$${bidAmount}</span>
+            <span class="bid-time">${new Date(bid.bid_time).toLocaleString()}</span>
+          </div>
+        `;
+        bidList.appendChild(li);
+      });
+    }
+
+    // Handle bid submission
+    document.getElementById('placeBidBtn').addEventListener('click', async () => {
+      if (!currentAuction) {
+        alert('Auction data not loaded. Please refresh the page.');
+        return;
+      }
+
+      const bidAmount = document.getElementById('bidAmount').value;
+      const currentBid = parseFloat(currentAuction.current_bid || currentAuction.starting_price);
+      const bidIncrement = parseFloat(currentAuction.bid_increment || 100); // Default to 100 if not specified
+
+      if (!bidAmount || isNaN(bidAmount) || parseFloat(bidAmount) <= 0) {
+        alert('Please enter a valid bid amount');
+        return;
+      }
+
+      const newBidAmount = parseFloat(bidAmount);
+      const minimumNextBid = currentBid + bidIncrement;
+
+      if (newBidAmount < minimumNextBid) {
+        alert(`Your bid must be at least $${minimumNextBid.toFixed(2)} (current bid + bid increment of $${bidIncrement.toFixed(2)})`);
+        return;
+      }
+
+      try {
+        // Get user data from session storage
+        const userData = sessionStorage.getItem('user');
+        if (!userData) {
+          alert('Please login to place a bid');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        const user = JSON.parse(userData);
+        if (!user.user_id) {
+          alert('Invalid user data. Please login again.');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        // Prepare bid data
+        const bidData = {
+          auction_id: parseInt(currentAuction.auction_id),
+          bid_amount: newBidAmount,
+          user_id: parseInt(user.user_id)
+        };
+
+        console.log('Current auction:', currentAuction);
+        console.log('User data:', user);
+        console.log('Sending bid data:', bidData);
+
+        const response = await fetch(`${API_BASE_URL}/api/bids`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(bidData)
+        });
+
+        const responseData = await response.json();
+        console.log('Server response:', responseData);
+
+        if (response.ok) {
+          alert('Bid placed successfully!');
+          document.getElementById('bidAmount').value = '';
+          fetchProductDetails(); // Refresh the page data
+        } else {
+          // Handle specific error messages from the server
+          if (responseData.message) {
+            alert(responseData.message);
+          } else if (responseData.error) {
+            alert(responseData.error);
+          } else {
+            alert('Failed to place bid. Please try again.');
+          }
+        }
+      } catch (error) {
+        console.error('Error placing bid:', error);
+        alert('An error occurred while placing the bid. Please try again.');
+      }
+    });
+
+    // Fetch data when page loads
+    document.addEventListener('DOMContentLoaded', fetchProductDetails);
+
+
+
+    // login dropdown
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get the elements
+      const dropdown = document.querySelector('.dropdown');
+      const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+      const userMenu = document.getElementById('user-menu');
+      const userNameElement = document.getElementById('user-name');
+      const loginLink = document.getElementById('login-link');
+      let timer;
+
+      // Hide dropdown menu initially
+      dropdownMenu.style.display = 'none';
+
+      // Dropdown hover behavior
+      dropdown.addEventListener('mouseenter', () => {
+        clearTimeout(timer);
+        dropdownMenu.style.display = 'block';
+      });
+
+      dropdown.addEventListener('mouseleave', () => {
+        timer = setTimeout(() => {
+          dropdownMenu.style.display = 'none';
+        }, 200);
+      });
+
+      dropdownMenu.addEventListener('mouseenter', () => {
+        clearTimeout(timer);
+      });
+
+      dropdownMenu.addEventListener('mouseleave', () => {
+        timer = setTimeout(() => {
+          dropdownMenu.style.display = 'none';
+        }, 200);
+      });
+
+      // Handle user login state
+      const user = sessionStorage.getItem('user');
+      if (user) {
+        const parsedUser = JSON.parse(user);
+        // userNameElement.textContent = parsedUser.username;
+        document.getElementById('user-name-link').textContent = parsedUser.username;
+        userMenu.style.display = 'block';
+        loginLink.style.display = 'none';
+      } else {
+        userMenu.style.display = 'none';
+        loginLink.style.display = 'block';
+      }
+
+      // Toggle user dropdown
+      document.getElementById('user-name-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        userMenu.classList.toggle('open');
+      });
+
+      // Close dropdown if clicked outside
+      window.addEventListener('click', (e) => {
+        if (!userMenu.contains(e.target) && e.target.id !== 'user-name-link') {
+          userMenu.classList.remove('open');
+        }
+      });
+
+      // My Bid History
+      document.getElementById('my-bid-history').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = 'my_bids.html';
+      });
+
+      // Reset Password
+      document.getElementById('reset-password').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = 'reset_pass.html';
+      });
+
+      // Delete Account
+      document.getElementById('delete-account').addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+          const user = JSON.parse(sessionStorage.getItem('user'));
+          try {
+            const response = await fetch(`http://localhost:5000/api/users/${user.user_id}`, {
+              method: 'DELETE'
+            });
+            if (response.ok) {
+              alert('Account deleted.');
+              sessionStorage.clear();
+              window.location.href = 'index.html';
+            } else {
+              alert('Failed to delete account.');
+            }
+          } catch (error) {
+            console.error('Error deleting account:', error);
+            alert('Something went wrong.');
+          }
+        }
+      });
+
+      // Logout
+      document.getElementById('logout').addEventListener('click', (e) => {
+        e.preventDefault();
+        sessionStorage.clear();
+        window.location.href = 'login.html';
+      });
+      window.onload = function () {
+        const userNameElement = document.getElementById('user-name');
+        const loginLink = document.getElementById('login-link');
+
+        const user = sessionStorage.getItem('user');
+
+        if (user) {
+          const parsedUser = JSON.parse(user);
+          //   userNameElement.textContent = parsedUser.username;
+          document.getElementById('user-name-link').textContent = parsedUser.username;
+          userNameElement.style.display = 'block';
+          loginLink.style.display = 'none';
+        } else {
+          userNameElement.style.display = 'none';
+          loginLink.style.display = 'block';
+        }
+      };
+    });
+
+
+
+
+  </script>
+</body>
+
+</html>

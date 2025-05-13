@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Details - BUYME</title>
+  <link rel="stylesheet" href="product_detail.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <header class="title-bar">
+    <div class="logo"><h1>BUYME</h1></div>
+    <nav class="nav-links">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li class="dropdown">
+          <a href="#" class="shop-btn">Shop</a>
+          <ul class="dropdown-menu">
+            <li><a href="men.html">Men</a></li>
+            <li><a href="women.html">Women</a></li>
+            <li><a href="unisex.html">Unisex</a></li>
+          </ul>
+        </li>
+        <li><a href="auction.html">Auction</a></li>
+        <li><a href="#contact-us">Contact</a></li>
+        <li><a href="login.html">Profile</a></li>
+        <li><a href="#">Cart</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="product-container">
+    <!-- Left Section: Images -->
+    <section class="left-section">
+      <img id="productImage" src="" alt="Product Image" class="product-image" />
+    </section>
+
+    <section class="middle-section">
+      <h2 id="productName"></h2>
+      <p id="productDescription"></p>
+      <div class="product-specs-grid">
+        <div class="label">Size</div>
+        <div class="label">Color</div>
+        <div class="label">Type</div>
+        <div class="value" id="productSize"></div>
+        <div class="value" id="productColor"></div>
+        <div class="value" id="productType"></div>
+      
+        <div class="label">Category</div>
+        <div class="label">Material</div>
+        <div class="label">Brand</div>
+        <div class="value" id="productCategory"></div>
+        <div class="value" id="productMaterial"></div>
+        <div class="value" id="productBrand"></div>
+      
+        <div class="label expiry-label">Product Expiry :</div>
+        <div class="label status-label">Status</div>
+        <div class="value expiry-value">15th May, 2025; 9:00PM</div>
+        <div class="value status-value">Available</div>
+
+        <div class="label full">Seller Details :</div>
+        <div class="value full" id="sellerDetails"></div>
+      </div>      
+     
+    </section>
+
+    
+  </div>
+ 
+
+  <script>
+  const API_BASE_URL = 'http://localhost:5000';
+
+    // Get item_id from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const itemId = urlParams.get('item_id');
+
+    if (!itemId) {
+      alert('No product ID provided');
+      window.location.href = 'index.html';
+    }
+
+    let updateTimer; // Store the timer interval
+
+    // Fetch product details
+    async function fetchProductDetails() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/items/${itemId}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const product = await response.json();
+        displayProductDetails(product);
+        
+        
+      } catch (error) {
+        console.error('Error fetching product details:', error);
+        alert('Error loading product details. Please try again.');
+      }
+    }
+
+    // Display product details
+    function displayProductDetails(product) {
+      // Set product image
+      document.getElementById('productImage').src = `${API_BASE_URL}${product.image}`;
+      
+      // Set product name and description
+      document.getElementById('productName').textContent = product.name;
+      document.getElementById('productDescription').textContent = product.description || 'No description available';
+      
+      // Set product specifications
+      document.getElementById('productSize').textContent = product.size || 'N/A';
+      document.getElementById('productColor').textContent = product.color || 'N/A';
+      document.getElementById('productType').textContent = product.gender || 'N/A';
+      document.getElementById('productCategory').textContent = product.gender || 'N/A';
+      document.getElementById('productMaterial').textContent = product.material || 'N/A';
+      document.getElementById('productBrand').textContent = product.brand || 'N/A';
+      
+      // Set seller details
+      document.getElementById('sellerDetails').textContent = `Seller ID: ${product.seller_id}`;
+
+      // Set auction end time
+      if (product.end_time) {
+        auctionEndTime = new Date(product.end_time);
+        console.log('Auction end time set to:', auctionEndTime);
+      }
+    }
+
+    
+    // Fetch product details when page loads
+    document.addEventListener('DOMContentLoaded', fetchProductDetails);
+
+</script>
+</body>
+</html> 

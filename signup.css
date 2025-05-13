@@ -1,0 +1,301 @@
+/* Font + Reset */
+body {
+  margin: 0;
+  font-family: "Roboto Mono", monospace;
+  /* background:linear-gradient(to bottom right, #ff6600, #ffcc00); */
+  /* background: linear-gradient(90deg,rgba(0, 0, 0, 1) 0%, rgba(71, 71, 71, 1) 50%, rgba(71, 71, 71, 1) 100%); */
+  background: #ffcc00;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.form-header h2 {
+  font-size: 1.8rem;
+  color: #111;
+}
+
+/* Wrapper */
+.login-wrapper {
+  width: 90%;
+  max-width: 900px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+}
+
+/* Main Box */
+.login-box {
+  display: flex;
+  flex-direction: row;
+  height: 500px;
+}
+
+/* Left Column - Image */
+.login-image-section {
+  flex: 1;
+  background: linear-gradient(to bottom, #FFB22C, #ffcc00 50%, #FFB22C);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* .login-image-section img {
+  max-width: 90%;
+  max-height: 90%;
+  transition: transform 0.5s ease;
+  border-radius: 10px;
+} */
+
+.login-image-section img {
+  max-width: 90%;
+  max-height: 90%;
+  transition: transform 0.5s ease;
+  border-radius: 10px;
+  animation: floatShoe 3s ease-in-out infinite;
+}
+
+
+.login-image-section:hover img {
+  transform: scale(1.05);
+}
+
+
+/* .login-form-section {
+  flex: 1;
+  background: #ffffff;
+  padding: 3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto; 
+  max-height: 100%;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+} */
+
+.login-form-section {
+  flex: 1;
+  background: #ffffff;
+  padding: 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+
+/* .login-form-section form {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+} */
+
+.login-form-section form {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+  width: 100%;
+  max-width: 320px; /* Keeps things compact */
+  margin: 0 auto;
+}
+
+/* Right Column - Form */
+/* .login-form-section {
+  flex: 1;
+  background: #ffffff;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+} */
+
+.login-form-section h2 {
+  margin-bottom: 0.5rem;
+  color: #111;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+/* Floating Inputs */
+.inputbox {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.5rem; /* Slightly less than before */
+}
+
+
+.inputbox input {
+  width: 100%;
+  padding: 14px 10px;
+  font-size: 1rem;
+  color: #000;
+  background: none;
+  border: none;
+  border-bottom: 2px solid #aaa;
+  outline: none;
+}
+
+.inputbox span {
+  position: absolute;
+  left: 10px;
+  top: 14px;
+  color: #aaa;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+.inputbox input:focus ~ span,
+.inputbox input:valid ~ span {
+  transform: translateY(-20px);
+  font-size: 0.8rem;
+  color: #ff9900;
+}
+
+.inputbox i {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0%;
+  background: #ff9900;
+  transition: 0.4s;
+}
+
+.inputbox input:focus ~ i,
+.inputbox input:valid ~ i {
+  width: 100%;
+}
+
+/* Remember / Forgot */
+.remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+.remember-forgot a {
+  color: #ff6600;
+  text-decoration: none;
+}
+
+/* Button */
+.login-btn {
+  padding: 12px;
+  width: 100%;
+  background: black;
+  color: #ffcc00;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+  background: #ffcc00;
+  color: black;
+}
+
+/* Signup Link */
+.signup-text {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      text-align: center;
+      color: #444;
+    }
+    
+.signup-text a {
+  color: #ff6600;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .login-box {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .login-image-section,
+  .login-form-section {
+    flex: none;
+    width: 100%;
+    height: 300px;
+  }
+
+  .login-form-section {
+    height: auto;
+  }
+}
+
+
+@keyframes floatShoe {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+
+.selectbox select {
+  width: 100%;
+  padding: 14px 10px;
+  font-size: 1rem;
+  color: #000;
+  background: none;
+  border: none;
+  border-bottom: 2px solid #aaa;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.selectbox span {
+  position: absolute;
+  left: 10px;
+  top: 14px;
+  color: #aaa;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+.selectbox select:focus ~ span,
+.selectbox select:valid ~ span {
+  transform: translateY(-20px);
+  font-size: 0.8rem;
+  color: #ff9900;
+}
+
+.selectbox i {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0%;
+  background: #ff9900;
+  transition: 0.4s;
+}
+
+.selectbox select:focus ~ i,
+.selectbox select:valid ~ i {
+  width: 100%;
+}

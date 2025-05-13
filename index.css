@@ -1,0 +1,585 @@
+/* Fonts and Reset */
+body {
+  margin: 0;
+  font-family: "Roboto Mono", monospace;
+  scroll-behavior: smooth;
+}
+
+/* Title Bar */
+.title-bar {
+  position: sticky;
+  top: 0;
+  background-color: black;
+  color: yellow;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  z-index: 10;
+}
+
+.title-bar .logo h1 {
+  font-family: 'Special Gothic Expanded One', sans-serif;
+  margin: 0;
+}
+
+.nav-links ul {
+  font-weight: 100;
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  /* letter-spacing: 1px; */
+}
+
+.nav-links li {
+  letter-spacing: 2px;
+  position: relative;
+}
+
+/* .nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+} */
+
+
+.nav-links a {
+  position: relative;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  font-family: "Roboto Mono", monospace;
+  padding: 5px 0;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.nav-links a:hover {
+  transform: translateY(-1px) scale(1.03);
+}
+
+.nav-links a:active {
+  color: yellow; /* Red on click */
+  transform: translateY(0); /* Reset pop */
+}
+
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* Dropdown */
+.dropdown {
+  position: relative;
+}
+
+.shop-btn {
+  cursor: pointer;
+}
+
+
+/* .dropdown-menu {
+  display: none ; Ensure it's hidden on page load */
+  /* position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #333;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 120px;
+  z-index: 1000;
+  border-radius: 4px;
+}
+ */
+ul .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 18px); /* pushes it a bit lower */
+  left: 0;
+  background-color: #333;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 120px;
+  z-index: 1000;
+  border-radius: 4px;
+}
+
+
+  /* Show the dropdown menu when hovering over the parent dropdown */
+  .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+
+  .dropdown-menu li a {
+      display: block;
+      padding: 10px 20px;
+      color: white;
+      text-decoration: none;
+    }
+
+.dropdown-menu li a {
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown-menu li a:hover {
+  background-color: yellow;
+  color: black;
+}
+
+/* Show the dropdown when hovering on the Shop button */
+.nav-links .dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  border-top: 2px solid yellow;
+  border-bottom:2px solid yellow;
+}
+
+
+
+
+/* .dropdown-menu li a:hover {
+  background-color: #555;
+}
+ */
+
+
+/* Main Banner */
+/* .main-banner {
+  background: url('shoe1.jpg') no-repeat center center/cover;
+  height: 100vh;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 2rem;
+  letter-spacing: 1px;
+  /* font-size: small; */
+/* } */
+
+.main-banner {
+  background: url('images/wshoe5.jpg') no-repeat center center fixed;
+  background-size: cover;
+  height: 100vh;
+  color: yellow;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 2rem;
+}
+
+.main-banner h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  /* color: black; */
+}
+
+.main-banner p {
+  font-size: 1.0rem;
+  max-width: 600px;
+  /* color: black; */
+
+}
+
+
+
+.cta-btn {
+  position: relative;
+  margin-top: 2rem;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  background-color: black;
+  color: yellow;
+  cursor: pointer;
+  border: none;
+  overflow: hidden;
+  z-index: 1;
+  border-radius: 8px;
+  transition: color 0.3s ease;
+}
+
+.cta-btn::before {
+  content: "";
+  position: absolute;
+  background-color: yellow;
+  width: 0%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: width 0.4s ease;
+}
+
+.cta-btn:hover::before {
+  width: 100%;
+}
+
+.cta-btn:hover {
+  color: black;
+}
+
+
+
+/* Collections Section */
+.collections-section { 
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: stretch;
+height: 100vh;
+background-color: #111;
+}
+
+.collection-box {
+flex: 1;
+position: relative;
+overflow: hidden;
+text-align: center;
+/* color: black; */
+font-size: 2rem;
+font-weight: bold;
+display: flex;
+flex-direction: column;
+justify-content: center;
+}
+
+.men-box h2{
+color: black;
+}
+
+.women-box h2{
+color: white;
+}
+
+.collection-box h2 {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 100%;
+z-index: 2;
+/* text-shadow: 2px 2px 5px black; */
+margin: 0;
+}
+
+
+.collection-image {
+width: 100%;
+height: 100%;
+overflow: hidden;
+}
+
+.collection-image img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+transition: transform 0.6s ease;
+}
+
+.collection-box:hover img {
+transform: scale(1.1);
+/* Zoom on hover */
+}
+
+
+
+
+.card .content .heading {
+font-size: 28px;
+font-weight: 700;
+}
+
+.card:hover .content {
+opacity: 1;
+transform: translateY(0);
+}
+
+.card:hover .img-content {
+scale: 2.5;
+rotate: 30deg;
+filter: blur(7px);
+}
+
+.card:hover .img-content img {
+opacity: 0.3;
+} */
+
+
+.input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input {
+  width: 100%;
+  border: solid 1.5px #9e9e9e;
+  border-radius: 1rem;
+  background: none;
+  padding: 1rem;
+  font-size: 1rem;
+  color: #f5f5f5;
+  transition: border 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.user-label {
+  position: absolute;
+  left: 15px;
+  top: 1rem;
+  color: #e8e8e8;
+  pointer-events: none;
+  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input:focus,
+.input:valid {
+  outline: none;
+  border: 1.5px solid black;
+}
+
+.input:focus ~ .user-label,
+.input:valid ~ .user-label {
+  transform: translateY(-50%) scale(0.8);
+  background-color: #212121;
+  padding: 0 .2em;
+  color: black;
+}
+
+.contact-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 4rem 2rem;
+  background-color: #222222;
+  color: white;
+  flex-wrap: wrap;
+}
+
+.contact-column {
+  flex: 1;
+  min-width: 280px;
+  padding: 1rem;
+}
+
+.contact-column h3 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: yellow;
+}
+
+.contact-column p {
+  line-height: 1.6;
+}
+
+.social-links a {
+  display: block;
+  color: #ccc;
+  text-decoration: none;
+  margin: 0.3rem 0;
+  transition: color 0.3s;
+}
+
+.social-links a:hover {
+  color: yellow;
+}
+
+.contact-form form,
+.queries form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/* Floating Label Inputs */
+.inputbox {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.5rem; /* Ensures space after each input */
+}
+
+.inputbox input,
+.inputbox textarea {
+  position: relative;
+  width: 100%;
+  padding: 20px 10px 10px;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+  border: none;
+  color: black;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+  z-index: 10;
+  resize: none;
+  border-bottom: 2px solid #444;
+  line-height: 1.4;
+}
+
+/* .inputbox textarea {
+  min-height: 100px;
+}
+ */
+.inputbox span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 20px 10px 10px;
+  font-size: 1em;
+  color: #8f8f8f;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+  pointer-events: none;
+}
+
+.inputbox input:valid ~ span,
+.inputbox input:focus ~ span {
+  color: yellow;
+  transform: translateX(-10px) translateY(-34px);
+  font-size: 0.75em;
+}
+
+.inputbox i {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px; /* start small */
+  background: yellow;
+  border-radius: 4px;
+  transition: 0.5s;
+  pointer-events: none;
+  z-index: 9;
+}
+
+
+.inputbox input:focus ~ i,
+.inputbox input:valid ~ i {
+height: 44px; /* animated grow */
+}
+/* Checkbox spacing fix */
+.checkbox {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+
+/* Checkbox & Button */
+.checkbox {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.cta-btn1 {
+  align-self: flex-start;
+  position: relative;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  border: none;
+  overflow: hidden;
+  z-index: 1;
+  border-radius: 8px;
+  transition: color 0.3s ease;
+}
+
+.cta-btn1::before {
+  content: "";
+  position: absolute;
+  background-color: yellow;
+  width: 0%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: width 0.4s ease;
+}
+
+.cta-btn1:hover::before {
+  width: 100%;
+}
+
+/* User Menu and Settings Dropdown */
+.user-menu {
+  position: relative;
+}
+
+.settings-icon {
+  margin-left: 6px;
+  font-size: 1.1em;
+  vertical-align: middle;
+}
+
+ul .user-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: #333;
+  border-top: 2px solid yellow;    
+  border-bottom: 2px solid yellow;
+  min-width: 180px;
+  z-index: 100;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  border-radius: 4px;
+  padding: 0;
+  list-style: none;
+  margin-top: 10px;
+}
+
+.user-menu.open .user-dropdown {
+  display: block;
+}
+
+.user-dropdown li a {
+  padding: 10px 16px;
+  color: white;
+  text-decoration: none;
+  font-family: 'Roboto Mono', monospace;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.user-dropdown li a:hover {
+  background-color: yellow;
+  color: black;
+}
+
+/* Ensure proper spacing for the user menu */
+#user-menu {
+  margin-left: 0rem;
+}
+
+#user-name-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* padding-top: 15px; */
+}
+
+
+
+

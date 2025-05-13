@@ -1,0 +1,348 @@
+body {
+    margin: 0;
+    font-family: "Roboto Mono", monospace;
+    scroll-behavior: smooth;
+    background: #333;
+}
+
+/* Title Bar */
+.title-bar {
+    background-color: #333;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo h1 {
+    margin: 0;
+    font-family: 'Special Gothic Expanded One', sans-serif;
+    color: yellow;
+}
+
+.nav-links ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.nav-links a:hover {
+    color: yellow;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 18px);
+    left: 0;
+    background-color: #333;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    min-width: 120px;
+    z-index: 1000;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    border-top: 2px solid yellow;
+    border-bottom: 2px solid yellow;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu li a {
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-menu li a:hover {
+    background-color: yellow;
+    color: black;
+}
+
+/* Category Bar */
+.category-bar {
+    background-color: #333;
+    padding: 1rem 2rem;
+    border-top: 2px solid yellow;
+    border-bottom: 2px solid yellow;
+}
+
+.category-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0.5rem 0;
+}
+
+.category-label {
+    color: yellow;
+    font-weight: bold;
+    margin-right: 1rem;
+    white-space: nowrap;
+}
+
+.category-item {
+    color: white;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: background-color 0.3s;
+}
+
+.category-item:hover {
+    background-color: #444;
+}
+
+.category-item.active {
+    background-color: yellow;
+    color: black;
+}
+
+/* Products Grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.card {
+    position: relative;
+    background: yellow;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+    height: 300px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+.image {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.card:hover .image {
+    transform: scale(1.05);
+}
+
+.text {
+    padding: 1rem;
+    text-align: center;
+}
+
+.text span {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.text p {
+    color: #666;
+    margin: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+  }
+  
+ 
+  /* Dropdown */
+  .dropdown {
+    position: relative;
+  }
+  
+  .shop-btn {
+    cursor: pointer;
+  }
+  
+
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 18px); /* pushes it a bit lower */
+    left: 0;
+    background-color: #333;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    min-width: 120px;
+    z-index: 1000;
+    border-radius: 4px;
+  }
+  
+
+    /* Show the dropdown menu when hovering over the parent dropdown */
+    .dropdown:hover .dropdown-menu {
+        display: block;
+      }
+  
+
+    .dropdown-menu li a {
+        display: block;
+        padding: 10px 20px;
+        color: white;
+        text-decoration: none;
+      }
+
+ .dropdown-menu li a {
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: block;
+  }
+  .dropdown-menu li a:hover {
+    background-color: yellow;
+    color: black;
+  }
+  
+  /* Show the dropdown when hovering on the Shop button */
+  .nav-links .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+  
+  .dropdown-menu {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    border-top: 2px solid yellow;
+    border-bottom:2px solid yellow;
+  }
+  
+ 
+  
+/* Category Bar */
+.category-bar {
+    background-color: #333;
+    padding: 1rem 2rem;
+    /* border-top: 2px solid yellow; */
+    /* border-bottom: 2px solid yellow; */
+    overflow-x: auto;
+  }
+  
+  .category-container {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+  }
+  
+  .category-container::-webkit-scrollbar {
+    display: none; 
+  }
+  
+  .category-item {
+    white-space: nowrap;
+    background-color: black;
+    color: yellow;
+    padding: 0.6rem 1.0rem;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: small;
+    font-family: "Roboto Mono", monospace;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    /* border: 2px solid yellow; */
+  }
+  
+  .category-label {
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: "Roboto Mono", monospace;
+    margin-right: 1rem;
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  .category-item:hover {
+    background-color: yellow;
+    color: black;
+    transform: scale(1.05);
+  }
+  
+  
+  /* User Menu and Settings Dropdown */
+  .user-menu {
+    position: relative;
+  }
+  
+  .settings-icon {
+    margin-left: 6px;
+    font-size: 1.1em;
+    vertical-align: middle;
+  }
+  
+ ul .user-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: #333;
+    border-top: 2px solid yellow;    
+    border-bottom: 2px solid yellow;
+    min-width: 180px;
+    z-index: 100;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    border-radius: 4px;
+    padding: 0;
+    list-style: none;
+    margin-top: 10px;
+  }
+  
+  .user-menu.open .user-dropdown {
+    display: block;
+  }
+  
+  .user-dropdown li a {
+    padding: 10px 16px;
+    color: white;
+    text-decoration: none;
+    font-family: 'Roboto Mono', monospace;
+    display: block;
+    transition: all 0.3s ease;
+  }
+  
+  .user-dropdown li a:hover {
+    background-color: yellow;
+    color: black;
+  }
+  
+  /* Ensure proper spacing for the user menu */
+  #user-menu {
+    margin-left: 1.5rem;
+  }
+  
+  #user-name-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Seller Dashboard | BuyMe</title>
+  <style>
+    body {
+      font-family: 'Robot mono', monospace;
+      margin: 0;
+      background: #333;
+    }
+
+    header {
+      margin: 0;
+      padding: 0;
+      height: 20px;
+      background-color: black;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h2 {
+      margin: 0;
+      font-size: 25px;
+      color: yellow;
+    }
+
+    /* * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto mono', monospace;
+    } */
+    .dashboard-container {
+        margin: 50px;
+        width: 100%;
+        max-width: 1200px;
+      }
+      
+      .dashboard-heading {
+        text-align: left;
+        font-size: 2rem;
+        color: white;
+        margin-bottom: 2rem;
+      }
+
+
+    /* body {
+        background-color: #333;
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+      }
+       */
+
+    /* Cards Container */
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    /* Card Styles */
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      height: 200px;
+      width: 250px;
+      border-radius: 10px;
+      color: black;
+      cursor: pointer;
+      transition: 400ms;
+      padding: 1.5rem;
+      justify-content: space-between;
+    }
+
+    .cards .red {
+      background-color: yellow;
+      color: black;
+    }
+
+    .cards .blue {
+      background-color: #eab308;
+    }
+
+    .cards .green {
+      background-color: yellow;
+    }
+
+    .cards .yellow {
+      background-color: #eab308;
+    }
+
+    .cards .card p.tip {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .cards .card p.second-text {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .cards .card:hover {
+      transform: scale(1.1, 1.1);
+    }
+
+    .cards:hover > .card:not(:hover) {
+      filter: blur(8px);
+      transform: scale(0.9, 0.9);
+    }
+
+    /* CTA Button */
+    .cta-btn {
+      position: relative;
+      margin-top: 1rem;
+      padding: 0.6rem 1.5rem;
+      font-size: 1rem;
+      background-color: black;
+      color: yellow;
+      cursor: pointer;
+      border: none;
+      overflow: hidden;
+      z-index: 1;
+      border-radius: 8px;
+      transition: color 0.3s ease;
+    }
+
+    .cta-btn::before {
+      content: "";
+      position: absolute;
+      background-color: yellow;
+      width: 0%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      transition: width 0.4s ease;
+    }
+
+    .cta-btn:hover::before {
+      width: 100%;
+    }
+
+    .cta-btn:hover {
+      color: black;
+    }
+
+
+    
+
+    
+
+
+
+    .logout {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .logout:hover {
+      text-decoration: none;
+      color: yellow;
+  transform: translateY(-1px) scale(1.03);
+
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>BUYME - Seller Dashboard</h2>
+  <a href="login.html" class="logout">Logout</a>
+</header>
+
+<!-- <div class="container">
+
+  <h2 style="color: white;">Welcome, Seller</h2>
+
+  <div class="dashboard-cards">
+
+    <div class="card" style=" 
+      background-color: yellow;">
+      <h3>My Listings</h3>
+      <p>View, edit or delete your current shoe listings.</p>
+      <a href="shoelist.html" class="cta-btn">Manage Listings</a>
+    </div> -->
+
+
+    <div class="dashboard-container">
+      <h1 class="dashboard-heading">Welcome, Seller!</h1>
+  
+      <div class="cards">
+        <!-- First Card -->
+        <div class="card red">
+          <div>
+            <p class="tip">My Listing</p>
+            <p class="second-text">View, edit or delete your current shoe listings.</p>
+          </div>
+          <button class="cta-btn" onclick="window.location.href='shoelist.html'">Manage Listings</button>
+        </div>
+  
+        <!-- Second Card -->
+        <div class="card blue">
+          <div>
+            <p class="tip">Add New Shoe</p>
+            <p class="second-text">Post a new item for auction.</p>
+          </div>
+          <button class="cta-btn" onclick="location.href='item.html'">Add Item</button>
+        </div>
+  
+        <!-- Third Card -->
+        <div class="card green">
+          <div>
+            <p class="tip">Recent Bids</p>
+            <p class="second-text">Track recent bids on your items.</p>
+          </div>
+          <button class="cta-btn" onclick="window.location.href='viewbids.html'">View Bids</button>
+        </div>
+    
+
+
+
+
+
+    <!-- <div class="card" style="background-color: #eab308;">
+      <h3>Add New Shoe</h3>
+      <p>Post a new item for auction.</p>
+      <a href="item.html" class="cta-btn">Add Item</a>
+    </div>
+
+    <div class="card" style="background-color: yellow;">
+      <h3>Recent Bids</h3>
+      <p>Track recent bids on your items.</p>
+      <a href="viewbids.html" class="cta-btn">View Bids</a>
+    </div>
+
+  </div> -->
+
+
+
+</body>
+</html>

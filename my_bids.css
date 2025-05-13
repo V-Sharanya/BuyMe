@@ -1,0 +1,104 @@
+body {
+    font-family: 'Roboto Mono', monospace;
+    background: #333;
+}
+
+/* my_bids.css */
+
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Navbar (title bar) styles */
+  .title-bar {
+    background-color: #1e1e2f; /* Dark blue-gray tone */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Logo styling */
+  .logo h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: yellow;
+  }
+  
+  /* Navigation link styling */
+  .nav-links ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .nav-links ul a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links ul a:hover {
+    color: yellow; /* Highlight color on hover */
+  }
+  
+  /* Responsive tweaks */
+  @media (max-width: 600px) {
+    .title-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  
+    .nav-links ul {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+  }
+  
+/* header {
+    background: #222;
+    color: #fff;
+    padding: 1rem;
+    height: 30px;
+} */
+
+header a {
+    color: #fff;
+    float: right;
+    text-decoration: none;
+} 
+
+main {
+    max-width: 800px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+th {
+    background: whitesmoke;
+}
+
+img {
+    border-radius: 4px;
+}

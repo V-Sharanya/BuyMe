@@ -1,0 +1,481 @@
+body {
+    margin: 0;
+    font-family: 'Roboto Mono', monospace;
+    background-color: #1a1a1a;
+    color: white;
+  }
+  
+  /* Title Bar */
+  .title-bar {
+    position: sticky;
+    top: 0;
+    background-color: black;
+    color: yellow;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    z-index: 10;
+  }
+  
+  .title-bar .logo h1 {
+    font-family: 'Special Gothic Expanded One', sans-serif;
+    margin: 0;
+  }
+  
+  .nav-links ul {
+    font-weight: 100;
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-links li {
+    letter-spacing: 2px;
+    position: relative;
+  }
+  
+  .nav-links a {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    font-family: "Roboto Mono", monospace;
+    padding: 5px 0;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  
+  .nav-links a:hover {
+    transform: translateY(-1px) scale(1.03);
+  }
+  
+  .nav-links a:active {
+    color: yellow;
+    transform: translateY(0);
+  }
+
+
+  /* User Menu and Settings Dropdown */
+.user-menu {
+  position: relative;
+}
+
+.settings-icon {
+  margin-left: 6px;
+  font-size: 1.1em;
+  vertical-align: middle;
+}
+
+ul .user-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: #333;
+  border-top: 2px solid yellow;    
+  border-bottom: 2px solid yellow;
+  min-width: 180px;
+  z-index: 100;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  border-radius: 4px;
+  padding: 0;
+  list-style: none;
+  margin-top: 10px;
+}
+
+.user-menu.open .user-dropdown {
+  display: block;
+}
+
+.user-dropdown li a {
+  padding: 10px 16px;
+  color: white;
+  text-decoration: none;
+  font-family: 'Roboto Mono', monospace;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.user-dropdown li a:hover {
+  background-color: yellow;
+  color: black;
+}
+
+/* Ensure proper spacing for the user menu */
+#user-menu {
+  margin-left: 0rem;
+}
+
+#user-name-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* padding-top: 15px; */
+}
+
+
+
+
+
+  
+  /* Product Container */
+  .product-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+  }
+  
+  .left-section,
+  .middle-section,
+  .right-section {
+    background-color: #222;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-top: 30px;
+  }
+  
+  .product-image {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  
+  /* Product Specs Grid */
+  .product-specs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.2rem 3rem;
+    margin-top: 2rem;
+  }
+  
+  .product-specs-grid .label {
+    font-weight: bold;
+    color: yellow;
+    margin-top: 10px;
+  }
+  
+  .product-specs-grid .value {
+    color: white;
+  }
+  
+  .product-specs-grid .full {
+    grid-column: span 3;
+    margin-top: 0.5rem;
+  }
+  
+  .expiry-label {
+    grid-column: 1;
+  }
+  
+  .status-label {
+    grid-column: 3;
+  }
+  
+  .expiry-value {
+    grid-column: 1;
+  }
+  
+  .status-value {
+    grid-column: 3;
+  }
+  
+  /* Bid Form */
+  .bid-form {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .bid-form input {
+    flex: 1;
+    margin-top: 18px;
+    height: 20px;
+    padding: 0.5rem;
+    border: 2px solid yellow;
+    border-radius: 6px;
+    background-color: black;
+    color: white;
+  }
+  
+  .bid-form button {
+    position: relative;
+    margin-top: 1rem;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    background-color: black;
+    color: yellow;
+    cursor: pointer;
+    border: none;
+    overflow: hidden;
+    z-index: 1;
+    border-radius: 8px;
+    transition: color 0.3s ease;
+  }
+  
+  .bid-form button::before {
+    content: "";
+    position: absolute;
+    background-color: yellow;
+    width: 0%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: width 0.4s ease;
+  }
+  
+  .bid-form button:hover::before {
+    width: 100%;
+  }
+  
+  .bid-form button:hover {
+    color: black;
+  }
+  
+  /* Bid List */
+  .bid-list {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1rem;
+  }
+  
+  .bid-list li {
+    background-color: #111;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    border-left: 4px solid yellow;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .product-container {
+      grid-template-columns: 1fr 1fr;
+    }
+    
+    .right-section {
+      grid-column: span 2;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .product-container {
+      grid-template-columns: 1fr;
+    }
+    
+    .right-section {
+      grid-column: span 1;
+    }
+    
+    .product-specs-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    
+    .full {
+      grid-column: span 2;
+    }
+  }
+  
+  /* Auction Status */
+  .auction-status {
+    background-color: #1a1a1a;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+  
+  .time-remaining {
+    font-size: 1.2rem;
+    color: #ffcc00;
+    margin: 1rem 0;
+    font-weight: bold;
+  }
+  
+  .time-remaining.ended {
+    color: #ff4444;
+  }
+  
+  .current-highest-bid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #2a2a2a;
+    border-radius: 6px;
+  }
+  
+  .current-highest-bid span:last-child {
+    color: yellow;
+    font-weight: bold;
+  }
+  
+  /* Winner Section */
+  .winner-section {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .winner-section h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+  }
+  
+  .winner-info {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 4px solid #27ae60;
+  }
+  
+  .winner-name {
+    font-weight: bold;
+    color: #27ae60;
+    margin-bottom: 8px;
+  }
+  
+  .winning-bid {
+    color: #2c3e50;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+  }
+  
+  .winning-time {
+    color: #7f8c8d;
+    font-size: 0.9em;
+  }
+  
+  .no-winner {
+    color: #7f8c8d;
+    text-align: center;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 6px;
+  }
+  
+  /* Auction Info Styles */
+  .auction-info {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .current-bid, .time-remaining {
+    margin-bottom: 10px;
+  }
+  
+  .current-bid h3, .time-remaining h3 {
+    color: #2c3e50;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+  }
+  
+  #highestBid {
+    font-size: 1.5em;
+    color: yellow;
+    font-weight: bold;
+  }
+  
+  #timeRemaining {
+    color: #e74c3c;
+    font-weight: bold;
+  }
+  
+  #timeRemaining.ended {
+    color: #7f8c8d;
+  }
+  
+  /* Bid History */
+  .bids-section {
+    margin-top: 2rem;
+  }
+  
+  .bid-list-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+  }
+  
+  .bid-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .bid-item {
+    background-color: #2a2a2a;
+    padding: 1rem;
+    margin-bottom: 0.8rem;
+    border-radius: 6px;
+    border-left: 4px solid #666;
+    transition: transform 0.2s ease;
+  }
+  
+  .bid-item:hover {
+    transform: translateX(5px);
+  }
+  
+  .bid-item.highest-bid {
+    border-left-color: #ffcc00;
+    background-color: #333;
+  }
+  
+  .bid-info {
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .bidder-name {
+    font-weight: 500;
+    color: #fff;
+  }
+  
+  .bid-amount {
+    color: yellow;
+    font-weight: bold;
+    text-align: right;
+  }
+  
+  .bid-time {
+    color: #999;
+    font-size: 0.9rem;
+    text-align: right;
+  }
+  
+  .no-bids {
+    text-align: center;
+    color: #666;
+    padding: 2rem;
+    font-style: italic;
+  }
+  
+  /* Scrollbar Styling */
+  .bid-list-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .bid-list-container::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 4px;
+  }
+  
+  .bid-list-container::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+  }
+  
+  .bid-list-container::-webkit-scrollbar-thumb:hover {
+    background: #444;
+  } 

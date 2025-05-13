@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Shoe Listings</title>
+  <style>
+    body{
+      background-color: white;
+      font-family: 'Roboto mono', monospace;
+    }
+    .shoe-container {
+      display: grid;
+      background-color: white;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .shoe-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .shoe-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .shoe-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .shoe-details {
+      margin-bottom: 15px;
+    }
+    .shoe-details p {
+      margin: 5px 0;
+      color: #333;
+    }
+    .shoe-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+    .shoe-actions a, .shoe-actions button {
+      padding: 8px 15px;
+      border-radius: 4px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .edit-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+    }
+    .delete-btn {
+      background-color: #ff9900;
+      color: white;
+      border: none;
+    }
+    h2 {
+      text-align: center;
+      margin: 20px 0;
+      color: #333;
+    }
+    .description {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Welcome to Your User Listings</h2>
+  <div class="shoe-container" id="shoeContainer">
+    <!-- Items will be dynamically inserted here -->
+  </div>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:5000';
+
+    async function fetchUsers() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/users`);
+        const users = await response.json();
+        displayUsers(users);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        document.getElementById('shoeContainer').innerHTML = '<p>Error loading users. Please try again later.</p>';
+      }
+    }
+
+    async function deleteItem(userId) {
+      if (!confirm('Are you sure you want to delete this user?')) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/delete/${userId}`, {
+          method: 'DELETE'
+        });
+        
+        if (response.ok) {
+          // Refresh the list after successful deletion
+          fetchUsers();
+        } else {
+          alert('Failed to delete user. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        alert('Error deleting user. Please try again.');
+      }
+    }
+
+    function displayUsers(users) {
+  const container = document.getElementById('shoeContainer');
+  container.innerHTML = users.map(user => `
+    <div class="shoe-card">
+      <div class="shoe-details">
+        <p><strong>Name:</strong> ${user.username || 'N/A'}</p>
+        <p><strong>Email:</strong> ${user.email || 'N/A'}</p>
+      </div>
+      <div class="shoe-actions">
+        <button onclick="deleteItem(${user.id})" class="delete-btn">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+
+    // Fetch shoes when the page loads
+    document.addEventListener('DOMContentLoaded', fetchUsers);
+  </script>
+</body>
+</html>

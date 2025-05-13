@@ -1,0 +1,72 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8"> 
+  <title>List a Shoe | BUYME</title> 
+  <link rel="stylesheet" href="item.css" /> 
+</head> 
+<body> 
+ 
+  <h2>List a New Shoe for Auction</h2> 
+ 
+  <form action="http://localhost:5000/items/add" method="POST"  id="addShoeForm" enctype="multipart/form-data"> 
+    <input type="text" name="name" placeholder="Shoe Name" required><br> 
+    <textarea name="description" placeholder="Description"></textarea><br> 
+    <input type="text" name="brand" placeholder="Brand"><br> 
+    <input type="text" name="size" placeholder="Size" required><br> 
+    <input type="text" name="color" placeholder="Color"><br> 
+    <input type="text" name="material" placeholder="Material"><br> 
+    <input type="file" name="image" accept="image/*" required><br> 
+  
+    <label>Gender:</label> 
+    <select name="gender"> 
+      <option value="men">Men</option> 
+      <option value="women">Women</option> 
+      <option value="kids">Unisex</option> 
+    </select><br> 
+    <!-- <input type="number" name="seller_id" placeholder="Seller ID" required><br>  -->
+    <button type="submit">Add Shoe</button> 
+
+    <div id="toast" class="toast">Shoe added successfully!</div>
+  </form> 
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('addShoeForm');
+      const toast = document.getElementById('toast');
+  
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Prevent the default form submission
+  
+        const formData = new FormData(form);
+  
+        try {
+          const response = await fetch('http://localhost:5000/items/add', {
+            method: 'POST',
+            body: formData
+          });
+  
+          if (response.ok) {
+            // Show the toast notification
+            toast.classList.add('show');
+  
+            // Hide the toast after 3 seconds
+            setTimeout(() => {
+              toast.classList.remove('show');
+            }, 10000);
+  
+            // Reset the form
+            form.reset();
+          } else {
+            alert('Failed to add shoe. Please try again.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again.');
+        }
+      });
+    });
+  </script>
+  
+</body> 
+</html>
