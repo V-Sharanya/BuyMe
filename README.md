@@ -29,6 +29,7 @@ Developed using HTML, CSS, JavaScript, Node.js, Express.js and MySQL, the platfo
 * Product Management:
   * Add new items with brand, size, material, and category details.
   * Edit or delete listings as needed.
+  * Create auction for the interested item.
     
 * Auction Insights:
   * Monitor highest bids in real time.
@@ -45,13 +46,16 @@ The Admin Dashboard gives full control over platform operations:
 * Dashboard Overview: Quick navigation to key functionalities.
 * User Management: View or delete registered accounts.
 * Product Oversight: Edit or remove all listings.
-* Auction Tracking: Analyze ongoing and completed auctions with bid history and winner data.
+* Auction Tracking: Analyze ongoing and completed auctions with bid history and winner data as well as can stop any acution if considered illegal.
 * Sales Reports:
   * View total earnings
   * Identify best-selling products and top buyers
 
 Admin credentials:
 Email: `admin@gmail.com` | Password: `1234`
+
+How the winner of an auction is declared?
+After the completion of auction, If the highest bid amount crosses the minimum price set by the seller then the winner is the highest bidder otherwise there is no winner for the given auction.
 
 
 🧩 Tech Stack Overview
@@ -72,5 +76,7 @@ Email: `admin@gmail.com` | Password: `1234`
 * Bids Table
 * User Queries Table
 
-### 💡 Why BUYME?
+💡 Why BUYME?
 BUYME brings the thrill of bidding into a dedicated shoe marketplace with real-time updates, clean design, and personalized user journeys. Whether you're competing for exclusive kicks or managing sales efficiently, BUYME delivers a feature-rich, scalable auction platform ready for customization and deployment.
+
+
